@@ -1,6 +1,7 @@
 # * sum,avg,min,max,flat
 # * ploting
 from mymethod import *
+from matplotlib import pyplot
 month_name  = "April"
 days_name = ["Mo", "Tu", "Wd", "Th", "Fr", "Sa", "Su", ]
 month_temps = [
@@ -11,7 +12,24 @@ month_temps = [
     [  8.0, 9.0, 8.0, 7.0, 6.0, 5.0, 4.0, ],    # < week
     [  3.0, 2.0, 1.0, 2.0, 3.0, 4.0,None, ]
 
-]
+]     
+
+#################### Draw grafi ###############
+for wi in range(5):
+    # Enumerarea zilelor din saptamina
+    for di in range(7):
+        if month_temps[wi][di] == None:
+           month_temps[wi][di] = -1           
+pyplot.plot(month_temps)
+pyplot.show()
+for wi in range(5):
+    # Enumerarea zilelor din saptamina
+    for di in range(7):
+        if month_temps[wi][di] == -1:
+           month_temps[wi][di] = None 
+
+#################### Draw grafi ###############
+
 
 ########### display The Calendar #############
 BoundaryBar()
