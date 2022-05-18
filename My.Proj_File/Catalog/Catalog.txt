@@ -1,0 +1,9 @@
+|1| Name: Mihai || Score: 100
+|2| Name: Grigore || Score: 150
+|3| Name: Jhon || Score: 170
+|4| Name: Marry || Score: 150
+|5| Name: Victor || Score: 110
+|6| Name: Petre || Score: 120
+|7| Name: Lilian || Score: 175
+|8| Name: Nicolai || Score: 155
+|9| Name: Marin || Score: 145
