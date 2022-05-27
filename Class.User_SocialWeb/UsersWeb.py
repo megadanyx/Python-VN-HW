@@ -1,3 +1,12 @@
+
+# Hw5:
+# * Create the messade class: body , fromUser , toUser , status
+#    
+# 
+# 
+# 
+
+
 ############### Provider ##################
 
 
@@ -8,6 +17,9 @@ class User:
         self.password = password
         self.online   = False
         self.friends  = []
+        self.posts    = []
+        self.sent_messages  = []
+        self.inbox_messages = []
     
     def __str__(self):
         return f"User <{self.nickname}>"
@@ -23,19 +35,59 @@ class User:
         else:
             return False
     def addFriend(self ,friend):
-        if  type(friend) == type(self) :
-            if len(self.friends) == 0:
-                self.friends.append(friend.nickname)     
-            else:
-                index = 0
-                for row in self.friends:
-                    index = index + 1
-                    if friend.nickname != row:
-                        if len(self.friends) == index:
-                           self.friends.append(friend.nickname)  
-                    else:
-                        return False
+        if  type(friend) != User:
+            return
+        friend_exists = False
+        for existing_friend in self.friends:
+            if existing_friend.nickname == friend.nickname:
+                friend_exists = True
+                break
+        if not friend_exists:
+            self.friends.append(friend)
 
+    def post(self, title, body):
+        if type(title) == str and type(body) == str:
+            new_post = Post(title,body)
+            self.posts.append(new_post)
+            new_post.author = self
+
+        return new_post
+    def send(self, body , toUser):
+        message = Message(self.nickname ,body ,toUser,)
+        self.sent_messages.append(f"|sent|-{str(message):<}")
+        toUser.inbox_messages.append(f"|received|-{str(message):<}")
+        return message
+
+class Post:
+
+    def __init__(self, title , body):
+        self.title = title
+        self.body  = body
+
+    def __str__(self):
+        return f"{self.title}"
+    
+    def __repr__(self):
+        return self.__str__()
+    
+
+class Message:
+
+    def __init__(self, fromUser, body , toUser ):
+        
+        self.fromUser = fromUser
+        self.body = body
+        self.toUser = toUser
+        # self.status =
+
+    def __str__(self):
+        return f"From: {self.fromUser:<5}>>| {self.body} |>>to>>:{self.toUser.nickname:>6}"
+    
+    def __repr__(self):
+        return self.__str__()
+    
+
+           
 ############### Provider ##################
 
 
@@ -48,19 +100,24 @@ user_3 = User("John", "qwerty1234")
 user_4 = User("Marry", "qwerty1234")
 user_5 = User("Lory", "qwerty1234")
 
-
-print(user_1.friends)
-print(user_2.friends)
-print(user_3.friends)
-user_1.auth("Mihai", "qwerty1234")
-
-user_1.addFriend(user_2)
-user_1.addFriend(user_3)
-user_1.addFriend(user_4)
-user_1.addFriend(user_5)
+user_1.send("Hi My friend How are you?" , user_2)
+user_3.send("Hi Petr How are you?" , user_2)
+user_2.send("Hi, im fine thank you , you?", user_1)
+print(*user_2.inbox_messages,sep="\n")
+print(*user_2.sent_messages,sep="\n")
 
 
-print(f"\nUser {user_1.nickname} has friends {user_1.friends}")
+# user_1.auth("Mihai", "qwerty1234")
+
+# post_1 = user_1.post("My Posts" , " My text for body posts ")
+
+# post_1 = user_1.post("My Posts 2" , " My text for body posts ")
+
+# post_1 = user_1.post("My Posts 3" , " My text for body posts ")
+# user_1.post(user_3)
+
+
+# print(" The post :",  user_1.posts," The author of post :" , post_1.author)
 #print(f"User{user_2} has friends {user_2.friends}")
 # print(f"User{user_3} has friends {user_3.friends}")
 
