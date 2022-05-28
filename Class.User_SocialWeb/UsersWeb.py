@@ -68,7 +68,7 @@ class User:
 
     def read(self, index):
         status = self.inbox_messages[index]
-        changestatus = status.replace("(unseen)" , "(see)")
+        changestatus = status.replace("(unseen)" , "(seen)")
         self.inbox_messages.pop(index)
         self.inbox_messages.insert(index, changestatus)
 
