@@ -20,7 +20,7 @@ class User:
         self.posts    = []
         self.sent_messages  = []
         self.inbox_messages = []
-    
+        self.message_statys = "unseen"
     def __str__(self):
         return f"User <{self.nickname}>"
     
@@ -53,10 +53,28 @@ class User:
 
         return new_post
     def send(self, body , toUser):
-        message = Message(self.nickname ,body ,toUser,)
-        self.sent_messages.append(f"|sent|-{str(message):<}")
-        toUser.inbox_messages.append(f"|received|-{str(message):<}")
+        
+        message = Message(self.nickname ,body ,toUser )
+        
+        inbox = str(message).replace(f" - to > :{toUser.nickname:>6}" , "")
+        
+        sent = str(message).replace(f"From: {self.nickname:<5} >" , "")
+        
+        self.sent_messages.append(f"  |sent|   - {sent:<}")
+        
+        toUser.inbox_messages.append(f"|received| - {inbox:<}")
+        
         return message
+
+    def read(self, index):
+        status = self.inbox_messages[index]
+        changestatus = status.replace("(unseen)" , "(see)")
+        self.inbox_messages.pop(index)
+        self.inbox_messages.insert(index, changestatus)
+
+        return changestatus
+
+
 
 class Post:
 
@@ -73,19 +91,17 @@ class Post:
 
 class Message:
 
-    def __init__(self, fromUser, body , toUser ):
-        
+    def __init__(self, fromUser, body , toUser):
+        self.status = "unseen"
         self.fromUser = fromUser
         self.body = body
         self.toUser = toUser
-        # self.status =
-
     def __str__(self):
-        return f"From: {self.fromUser:<5}>>| {self.body} |>>to>>:{self.toUser.nickname:>6}"
+        return f"From: {self.fromUser:<5} > | {self.body} |({self.status}) - to > :{self.toUser.nickname:>6}"
     
     def __repr__(self):
         return self.__str__()
-    
+        
 
            
 ############### Provider ##################
@@ -101,12 +117,14 @@ user_4 = User("Marry", "qwerty1234")
 user_5 = User("Lory", "qwerty1234")
 
 user_1.send("Hi My friend How are you?" , user_2)
-user_3.send("Hi Petr How are you?" , user_2)
 user_2.send("Hi, im fine thank you , you?", user_1)
-print(*user_2.inbox_messages,sep="\n")
+user_2.read(0)
+
+print(*user_1.sent_messages,sep="\n")
 print(*user_2.sent_messages,sep="\n")
+# print(user_1.read(0))
 
-
+print(*user_2.inbox_messages,sep="\n")
 # user_1.auth("Mihai", "qwerty1234")
 
 # post_1 = user_1.post("My Posts" , " My text for body posts ")
