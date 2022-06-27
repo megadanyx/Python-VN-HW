@@ -13,7 +13,7 @@ def MakeTransMail(email):
 
 
 
-def MyHasher(password,Email):
+def MyHasher(password,Email): # ADDed in Client.__init__ ---> self.password = MyHasher(password,Email)
     lastEmail = MakeTransMail(Email)
     firstPass=password+lastEmail
     hasher = hashlib.md5(firstPass.encode())
